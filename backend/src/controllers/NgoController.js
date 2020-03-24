@@ -1,19 +1,22 @@
-const crypto = require('crypto')
+const bcrypt = require('bcryptjs')
 const connection = require('../database/connection')
+const generateToken = require('../utils/generateToken')
 
 module.exports = {
   async index (req, res) {
-    const ngos = await connection('ngos').select('*')
+    const ngos = await connection('ngos').select('id', 'name', 'email', 'whatsapp', 'city', 'uf')
     return res.json(ngos)
   },
 
   async store (req, res) {
-    const { name, email, whatsapp, city, uf } = req.body
+    const { name, email, password, whatsapp, city, uf } = req.body
 
-    const id = crypto.randomBytes(4).toString('HEX')
+    const ngoExists = await connection('ngos').where('email', email).select('email').first()
+    if (ngoExists) return res.json(ngoExists)
 
-    await connection('ngos').insert({ id, name, email, whatsapp, city, uf })
+    const hashPassword = await bcrypt.hash(password, 10)
+    const [id] = await connection('ngos').insert({ name, email, password: hashPassword, whatsapp, city, uf })
 
-    return res.json({ id })
+    return res.json({ token: generateToken({ id: id }) })
   }
 }

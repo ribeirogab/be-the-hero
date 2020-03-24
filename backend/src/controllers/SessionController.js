@@ -1,13 +1,16 @@
+const bcrypt = require('bcryptjs')
 const connection = require('../database/connection')
+const generateToken = require('../utils/generateToken')
 
 module.exports = {
   async store (req, res) {
-    const { id } = req.body
+    const { email, password } = req.body
 
-    const ngo = await connection('ngos').where('id', id).select('name').first()
+    const ngo = await connection('ngos').where('email', email).select('id', 'password').first()
+    if (!ngo.id) return res.status(400).json({ error: 'NGO not found.' })
 
-    if (!ngo) return res.status(400).json({ error: 'No NGOs found with this ID.' })
+    if (!await bcrypt.compare(password, ngo.password)) return res.status(400).json({ error: 'Invalid login.' })
 
-    return res.json(ngo)
+    return res.json({ token: generateToken({ id: ngo.id }) })
   }
 }

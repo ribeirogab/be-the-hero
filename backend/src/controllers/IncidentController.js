@@ -18,20 +18,18 @@ module.exports = {
 
   async store (req, res) {
     const { title, description, value } = req.body
-    const ngoId = req.headers.ngo_id
 
-    const [id] = await connection('incidents').insert({ title, description, value, ngo_id: ngoId })
+    const [id] = await connection('incidents').insert({ title, description, value, ngo_id: req.ngoId })
 
     return res.json({ id })
   },
 
   async destroy (req, res) {
     const { incidentId } = req.params
-    const ngoId = req.headers.ngo_id
 
     const incident = await connection('incidents').where('id', incidentId).select('ngo_id').first()
 
-    if (incident.ngo_id !== ngoId) return res.status(401).json({ error: 'Operation not permitted.' })
+    if (incident.ngo_id !== req.ngoId) return res.status(401).json({ error: 'Operation not permitted.' })
 
     await connection('incidents').where('id', incidentId).delete()
 

@@ -4,17 +4,20 @@ const IncidentController = require('./controllers/IncidentController')
 const ProfileController = require('./controllers/ProfileController')
 const SessionController = require('./controllers/SessionController')
 
-const routes = Router()
+const authenticateMiddleware = require('./middlewares/authenticate')
 
-routes.post('/sessions', SessionController.store)
+const publicRoutes = Router()
+const privateRoutes = Router().use(authenticateMiddleware)
 
-routes.get('/ngos', NgoController.index)
-routes.post('/ngos', NgoController.store)
+publicRoutes.post('/sessions', SessionController.store)
 
-routes.get('/profile', ProfileController.index)
+publicRoutes.get('/ngos', NgoController.index)
+publicRoutes.post('/ngos', NgoController.store)
 
-routes.get('/incidents', IncidentController.index)
-routes.post('/incidents', IncidentController.store)
-routes.delete('/incidents/:incidentId', IncidentController.destroy)
+privateRoutes.get('/profile', ProfileController.index)
 
-module.exports = routes
+publicRoutes.get('/incidents', IncidentController.index)
+privateRoutes.post('/incidents', IncidentController.store)
+privateRoutes.delete('/incidents/:incidentId', IncidentController.destroy)
+
+module.exports = [publicRoutes, privateRoutes]
