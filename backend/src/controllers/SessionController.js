@@ -7,7 +7,7 @@ module.exports = {
     const { email, password } = req.body
 
     const ngo = await connection('ngos').where('email', email).select('id', 'password').first()
-    if (!ngo.id) return res.status(400).json({ error: 'NGO not found.' })
+    if (!ngo) return res.status(400).json({ error: 'NGO not found.' })
 
     if (!await bcrypt.compare(password, ngo.password)) return res.status(400).json({ error: 'Invalid login.' })
 

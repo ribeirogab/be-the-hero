@@ -29,7 +29,7 @@ module.exports = {
 
     const incident = await connection('incidents').where('id', incidentId).select('ngo_id').first()
 
-    if (incident.ngo_id !== req.ngoId) return res.status(401).json({ error: 'Operation not permitted.' })
+    if (incident.ngo_id !== req.ngoId.toString()) return res.status(401).json({ error: 'Operation not permitted.' })
 
     await connection('incidents').where('id', incidentId).delete()
 

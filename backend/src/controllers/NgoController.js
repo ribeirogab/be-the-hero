@@ -8,6 +8,12 @@ module.exports = {
     return res.json(ngos)
   },
 
+  async show (req, res) {
+    const ngoId = req.params.ngoId === 'I' ? req.ngoId : req.params.ngoId
+    const ngos = await connection('ngos').where('id', ngoId).select('id', 'name', 'email', 'whatsapp', 'city', 'uf')
+    return res.json(ngos[0])
+  },
+
   async store (req, res) {
     const { name, email, password, whatsapp, city, uf } = req.body
 

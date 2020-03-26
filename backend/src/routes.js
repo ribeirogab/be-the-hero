@@ -12,6 +12,7 @@ const privateRoutes = Router().use(authenticateMiddleware)
 publicRoutes.post('/sessions', SessionController.store)
 
 publicRoutes.get('/ngos', NgoController.index)
+privateRoutes.get('/ngos/u/:ngoId', NgoController.show)
 publicRoutes.post('/ngos', NgoController.store)
 
 privateRoutes.get('/profile', ProfileController.index)
