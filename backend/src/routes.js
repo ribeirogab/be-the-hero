@@ -4,21 +4,24 @@ const IncidentController = require('./controllers/IncidentController')
 const ProfileController = require('./controllers/ProfileController')
 const SessionController = require('./controllers/SessionController')
 
-const authenticateMiddleware = require('./middlewares/authenticate')
+const authenticate = require('./middlewares/auth/authenticate')
 
-const publicRoutes = Router()
-const privateRoutes = Router().use(authenticateMiddleware)
+const sessionValidator = require('./middlewares/validators/sessionValidator')
+const ngoValidator = require('./middlewares/validators/ngoValidator')
+const incidentValidator = require('./middlewares/validators/incidentValidator')
 
-publicRoutes.post('/sessions', SessionController.store)
+const routes = Router()
 
-publicRoutes.get('/ngos', NgoController.index)
-privateRoutes.get('/ngos/u/:ngoId', NgoController.show)
-publicRoutes.post('/ngos', NgoController.store)
+routes.post('/sessions', sessionValidator.store(), SessionController.store)
 
-privateRoutes.get('/profile', ProfileController.index)
+routes.get('/ngos', NgoController.index)
+routes.get('/ngos/u/:ngoId', authenticate.token, NgoController.show)
+routes.post('/ngos', ngoValidator.store(), NgoController.store)
 
-publicRoutes.get('/incidents', IncidentController.index)
-privateRoutes.post('/incidents', IncidentController.store)
-privateRoutes.delete('/incidents/:incidentId', IncidentController.destroy)
+routes.get('/profile', authenticate.token, ProfileController.index)
 
-module.exports = [publicRoutes, privateRoutes]
+routes.get('/incidents', incidentValidator.index(), IncidentController.index)
+routes.post('/incidents', authenticate.token, IncidentController.store)
+routes.delete('/incidents/:incidentId', authenticate.token, IncidentController.destroy)
+
+module.exports = routes
