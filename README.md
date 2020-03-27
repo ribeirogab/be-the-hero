@@ -3,11 +3,8 @@
 </h1>
 
 <h4 align="center"> 
-	🚀 Semana OmniStack 11.0 🚀
+	🚀 Semana OmniStack 11 🚀
 </h4>
-<p align="center">
-  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/DanielObara/SemanaOmnistack11?color=%2304D361">
-</p>
 
 <p align="center">
   <a href="#-project">Projeto</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
