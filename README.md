@@ -1,5 +1,5 @@
 <h1 align="center"> 
-	🚀 Semana OmniStack 11 🚀
+	🚀 Semana OmniStack 11.0 🚀
 </h1>
 
 <h2 align="center">
@@ -15,7 +15,7 @@
 
 ## 💻 Projeto
 
-O Be The Hero foi criado como uma causa humanitária, com o intuíto de ajudar financeiramente Organizações não Governamentais (ONGS). O aplicativo irá ligar pessoas que gostariam de ajudar com algum valor à ONGS que precisam dessa ajuda.
+Be The Hero was created as a humanitarian cause, with the aim of helping financially non-governmental organizations (NGOs). The application will connect people who would like to help with some value to the NGOs that need that help.
 
 
 ## :rocket: Tecnologias
