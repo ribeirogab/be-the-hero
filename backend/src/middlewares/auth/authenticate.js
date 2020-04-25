@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 
-module.exports = (req, res, next) => {
+const token = (req, res, next) => {
   const authenticateHeader = req.headers.authorization
 
   if (!authenticateHeader) return res.status(401).json({ error: 'No token provided.' })
@@ -20,3 +20,5 @@ module.exports = (req, res, next) => {
     return next()
   })
 }
+
+module.exports = { token }
